@@ -1,103 +1,146 @@
-import Image from "next/image";
 
-export default function Home() {
+"use client";
+import { useState } from 'react';
+import Link from 'next/link';
+
+
+const Navbar = () => {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <nav className="w-full bg-white shadow-md py-4 px-6 flex items-center justify-between">
+     <Link href="/" className="text-2xl font-bold text-pink-600">
+        CozyWares
+      </Link>
+      <div className="space-x-4">
+        <Link href="/Contact">
+          <span className="text-gray-700-bold hover:text-pink-500 cursor-pointer">Contact</span>
+        </Link>
+        <Link href="/Signup">
+          <span className="text-white bg-pink-500 px-4 py-2 rounded hover:bg-pink-600 cursor-pointer">Sign Up</span>
+        </Link>
+      </div>
+    </nav>
+  );
+};
+const pages = [
+  {
+    title: "We're Launching Soon!",
+    description: "Get ready for adorable kids apparel coming your way.",
+    imgSrc: "/hero-image_how-to-start-a-kids-clothing-line-from-concept-to-closet-1.jpg", // replace with your kid image path
+  },
+  {
+    title: "What We'll Sell",
+    description:
+      "Cute t-shirts, comfy pants, dresses, pajamas, and accessories for kids of all ages!",
+    imgSrc : "/cashmirino-dresses-1649779157.avif",
+  },
+  {
+    title: "Follow Us",
+    
+    imgSrc: "/Pink-Flower-girl-romper-dress-11.webp ",
+  },
+];
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+export default function LandingPage() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const prev = () => {
+    setCurrentIndex((i) => (i === 0 ? pages.length - 1 : i - 1));
+  };
+
+  const next = () => {
+    setCurrentIndex((i) => (i === pages.length - 1 ? 0 : i + 1));
+  };
+
+  return (
+    
+    <>
+    <Navbar/>
+   
+      <style>{`
+        .slider {
+          display: flex;
+          width: 300%; /* 3 pages */
+          transform: translateX(-${currentIndex * 100 / 3}%);
+          transition: transform 0.5s ease-in-out;
+        }
+        .page {
+          flex: 0 0 33.3333%;
+          padding: 2rem;
+          box-sizing: border-box;
+          text-align: center;
+          background: linear-gradient(135deg, #f9f0ff, #d7b8ff);
+          height: 100vh;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          gap: 1rem;
+        }
+        img {
+          max-width: 600px;
+          border-radius: 15px;
+          box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        button {
+          background: #7a52ff;
+          color: white;
+          border: none;
+          padding: 0.7rem 1.5rem;
+          border-radius: 25px;
+          cursor: pointer;
+          font-weight: 600;
+          margin: 0 1rem;
+        }
+        .nav {
+          position: fixed;
+          bottom: 20px;
+          left: 50%;
+          transform: translateX(-50%);
+          display: flex;
+          gap: 10px;
+        }
+      `}</style>
+
+      <div style={{ overflow: "hidden", width: "100vw", height: "100vh" }}>
+       <div className="slider">
+ {pages.map(({ title, description, imgSrc }, i) => (
+  <div className="page" key={i}>
+    <h1 className="text-5xl font-lobster text-pink-700 mb-4">{title}</h1>
+
+    <div className="relative w-full max-w-[600px]">
+      <img
+        src={imgSrc}
+        alt="Kids Apparel"
+        className={` rounded-[15px] shadow-lg relative z-0 ${
+          title === "What We'll Sell"
+            ? "w-[600px] h-[350px] object-cover": title === "Follow Us"
+      ? "w-full max-w-[600px] h-[450px] object-cover"
+            : "w-full max-w-[600px] h-auto"
+        }`}
+      />
+      
+      {title === "Follow Us" && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center  bg-opacity-60 text-white p-4 rounded-[15px] space-y-3">
+          <a href="https://instagram.com" target="_blank" className="hover:underline">Instagram</a>
+          <a href="https://facebook.com" target="_blank" className="hover:underline">Facebook</a>
+          <a href="https://tiktok.com" target="_blank" className="hover:underline">Tiktok</a>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      )}
     </div>
+ 
+   <div style={{ maxWidth: "300px" }}>
+  {typeof description === "string" ? <p>{description}</p> : description}
+</div>
+  </div>
+))}
+</div>
+      </div>
+
+      <div className="nav">
+        {currentIndex !== 0 && <button onClick={prev}>Prev</button>}
+  {currentIndex !== pages.length - 1 && <button onClick={next}>Next</button>}
+        
+      </div>
+    </>
   );
 }
